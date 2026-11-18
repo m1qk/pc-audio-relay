@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=8
+pytest-asyncio>=0.23
+playwright>=1.45   # optional: real-browser tests (needs a Chrome/Chromium binary, or CHROME_PATH)

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0e1116">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PC Audio">
+  <title>PC Audio</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>PC Audio</h1>
+      <p id="host" class="muted">&nbsp;</p>
+    </header>
+
+    <div id="status" class="pill" data-state="idle" role="status" aria-live="polite">
+      <span class="dot"></span><span id="statusText">Not connected</span>
+    </div>
+    <p id="detail" class="detail"></p>
+
+    <button id="connectBtn" class="primary" type="button">Connect</button>
+    <button id="resumeBtn" class="secondary" type="button" hidden>Tap to resume audio</button>
+
+    <div id="volRow" class="row">
+      <label for="volume">Volume</label>
+      <input id="volume" type="range" min="0" max="100" value="100">
+    </div>
+    <p id="volHint" class="muted small" hidden>Safari on iPhone ignores page volume. Use the side volume buttons.</p>
+
+    <details id="advanced">
+      <summary>Latency &amp; stats</summary>
+      <div class="row">
+        <label for="jb">Buffer</label>
+        <input id="jb" type="range" min="0" max="300" step="10" value="60">
+        <output id="jbVal">60 ms</output>
+      </div>
+      <p id="jbNote" class="muted small"></p>
+      <dl class="stats">
+        <dt>Network round trip</dt><dd id="stRtt">–</dd>
+        <dt>Receive buffer</dt><dd id="stBuf">–</dd>
+        <dt>Sender queue</dt><dd id="stQueue">–</dd>
+        <dt>Packet loss</dt><dd id="stLoss">–</dd>
+        <dt>Concealed audio</dt><dd id="stConc">–</dd>
+        <dt>Estimated delay</dt><dd id="stEst">–</dd>
+      </dl>
+      <p class="muted small">Estimated delay covers capture to the phone's audio output. It leaves out
+        the speaker or Bluetooth latency; measure the real total with the click test in the docs.</p>
+      <label class="check"><input id="awake" type="checkbox"> Keep screen on (fallback if audio stops when the phone locks)</label>
+    </details>
+
+    <audio id="player" playsinline autoplay></audio>
+  </main>
+  <script src="assets/sdp-utils.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

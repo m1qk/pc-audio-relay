@@ -1,0 +1,8 @@
+# Tested together on Python 3.12 (Linux for the server side; wheels verified for win_amd64).
+aiortc>=1.14,<2
+aiohttp>=3.10,<4
+qrcode>=7.4,<9
+numpy>=1.26
+psutil>=5.9
+# WASAPI loopback capture for Windows. Pulled in only on Windows.
+PyAudioWPatch>=0.2.12; sys_platform == "win32"

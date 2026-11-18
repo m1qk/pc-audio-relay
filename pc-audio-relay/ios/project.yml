@@ -1,0 +1,54 @@
+# XcodeGen project definition. Generate the Xcode project with:   xcodegen generate
+# (on a Mac:  brew install xcodegen). The GitHub Actions workflow does this for you.
+#
+# BEFORE YOU BUILD: change PRODUCT_BUNDLE_IDENTIFIER to something unique to you,
+# for example com.<yourname>.pcaudio. Apple requires bundle IDs to be globally unique.
+name: PCAudioReceiver
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  RelayCore:
+    path: Packages/RelayCore
+  # Maintained WebRTC build with LKRTC-prefixed classes. If Xcode cannot resolve this
+  # version, open the package in Xcode (File > Add Package Dependencies) and pick the newest tag.
+  # To use Google's unprefixed build instead, replace this with
+  #   url: https://github.com/stasel/WebRTC.git   and product: WebRTC
+  WebRTC:
+    url: https://github.com/livekit/webrtc-xcframework.git
+    from: "150.7871.02"
+
+targets:
+  PCAudioReceiver:
+    type: application
+    platform: iOS
+    sources:
+      - PCAudioReceiver
+    dependencies:
+      - package: RelayCore
+      - package: WebRTC
+        product: LiveKitWebRTC
+    info:
+      path: PCAudioReceiver/Info.plist
+      properties:
+        CFBundleDisplayName: PC Audio
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        # Keeps audio playing when the screen locks or another app is in front.
+        UIBackgroundModes: [audio]
+        # Shown the first time the app talks to a device on your Wi-Fi (iOS "Local Network" prompt).
+        NSLocalNetworkUsageDescription: PC Audio connects to your Windows PC on your home network to play its sound on this iPhone.
+        NSCameraUsageDescription: The camera is only used to scan the QR code shown on your PC.
+        # The sender is a plain-HTTP server on your LAN. This allows local addresses only.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.pcaudioreceiver   # CHANGE ME
+        SWIFT_VERSION: "5.9"
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
